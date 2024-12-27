@@ -8,7 +8,7 @@ from models.PromptModel import PromptMessageList
 
 load_dotenv()
 
-API_KEY = os.getenv("API_KEY")
+API_KEY = os.getenv("GPT_API_KEY")
 
 MODEL = "gpt-4o"
 client = OpenAI( api_key=API_KEY )
