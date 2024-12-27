@@ -1,21 +1,22 @@
 
 from models.PromptModel import PromptMessageList
 from reference.chatGPT import chat_completions_create
-from .Response import error_handler
+from .ResponseHandler import error_handler
 
 from openai.types.chat import ChatCompletion
+from fastapi import Response
 
 promptMessages = PromptMessageList()
 
 @error_handler
-def set_prompt_handler(event:dict, context:None=None):
-    prompt = event["prompt"]
+def set_prompt_handler(response:Response, eventData:dict=None):
+    prompt = eventData["prompt"]
     promptMessages.set_system_prompt(prompt)
     return {"prompt": promptMessages.get_system_prompt()}
 
 @error_handler
-def chat_without_prompt_handler(event:dict, context:None=None):
-    prompt = event["prompt"]
+def chat_without_prompt_handler(response:Response, eventData:dict=None):
+    prompt = eventData["prompt"]
     promptMessages.add_user_input(prompt)
     completion:ChatCompletion = chat_completions_create(promptMessages)
     promptMessages.add_assistant_output(completion.choices[0].message.content)
@@ -31,5 +32,5 @@ def chat_without_prompt_handler(event:dict, context:None=None):
     }
 
 @error_handler
-def get_chat_history_handler(event:dict=None, context:None=None):
+def get_chat_history_handler(response:Response, eventData:dict=None):
     return promptMessages.get_messages()
