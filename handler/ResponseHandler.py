@@ -5,8 +5,8 @@ from fastapi import Response, status
 
 
 def formatResponse(result:str|list|dict, *, code:str="OK000", detail:str=None):
-    if not isinstance(result, str):
-        result = json.dumps(result)
+    # if not isinstance(result, str):
+    #     result = json.dumps(result)
     
     return {
         "code": code,

@@ -21,7 +21,7 @@ def set_prompt(response:Response, eventData:dict):
 
 @app.post("/chat")
 def chat_without_prompt(response:Response, eventData:dict):
-    result = chat_without_prompt_handler(response, eventData)
+    result = chat_handler(response, eventData)
 
     return result
 
