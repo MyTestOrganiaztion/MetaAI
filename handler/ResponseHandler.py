@@ -52,4 +52,10 @@ def error_handler(func):
                 response.status_code = e.status_code
                 return formatResponse("PermissionDeniedError", code="ER004", detail=e.message)
     
+            except KeyError as e:
+                # 缺少傳入參數
+                print(f"KeyError: {e}. ")
+                response.status_code = status.HTTP_400_BAD_REQUEST
+                return formatResponse("KeyError", code="ER005", detail=e.__str__())
+
     return wrapper

@@ -1,8 +1,8 @@
 
-from models.PromptModel import PromptMessageList
+from models.PromptModel import SystemPromptPattern, PromptMessageList
 from reference.chatGPT import chat_completions_create
-from .ResponseHandler import error_handler
-from ..helper.PromptParser import extract_urls, get_website_content, replace_urls_with_text
+from helper.PromptParser import extract_urls, get_website_content, replace_urls_with_text
+from handler.ResponseHandler import error_handler
 
 from openai.types.chat import ChatCompletion
 from fastapi import Response
@@ -18,16 +18,25 @@ promptMessages = PromptMessageList()
 @error_handler
 def chat_handler(response:Response, eventData:dict=None):
     prompt = eventData["prompt"]
-    urls = extract_urls(prompt)
+    urls, nonUrls = extract_urls(prompt)
+
+    if urls and nonUrls:
+        promptMessages.set_system_prompt(SystemPromptPattern.TEXT_AND_WEB)
+    elif urls:
+        promptMessages.set_system_prompt(SystemPromptPattern.WEB_LINK_ONLY)
+    else:
+        promptMessages.set_system_prompt(SystemPromptPattern.TEXT_ONLY)
+
     for url in urls:
         websiteContent, imgUrls = get_website_content(url)
         prompt = replace_urls_with_text(prompt, url, websiteContent)
         for imgUrl in imgUrls:
-            promptMessages.add_user_input(imgUrl, isImage=True)
+            promptMessages.add_user_message(imgUrl, isImage=True)
+        # promptMessages.add_user_message(url, isImage=True)
     
-    promptMessages.add_user_input(prompt)
+    promptMessages.add_user_message(prompt)
     completion:ChatCompletion = chat_completions_create(promptMessages)
-    promptMessages.add_assistant_output(completion.choices[0].message.content)
+    promptMessages.add_assistant_message(completion.choices[0].message.content)
     tokenUsage = completion.usage
     promptTokenUsage = tokenUsage.prompt_tokens
     completionTokenUsage = tokenUsage.completion_tokens
@@ -40,5 +49,5 @@ def chat_handler(response:Response, eventData:dict=None):
     }
 
 @error_handler
-def get_chat_history_handler(response:Response, eventData:dict=None):
+def chat_history_handler(response:Response, eventData:dict=None):
     return promptMessages.get_messages()

@@ -1,14 +1,9 @@
-from dotenv import load_dotenv
-import os
 from openai import OpenAI
-from openai import APIConnectionError
+
+from env import API_KEY
 
 from models.PromptModel import PromptMessageList
 
-
-load_dotenv()
-
-API_KEY = os.getenv("GPT_API_KEY")
 
 MODEL = "gpt-4o"
 client = OpenAI( api_key=API_KEY )

@@ -13,20 +13,20 @@ Get parameter in request
     request body -> define to "dict", "list". ex. def function(var:dict)
 '''
 
-@app.post("/setprompt")
-def set_prompt(response:Response, eventData:dict):
-    result = set_prompt_handler(response, eventData)
+# @app.post("/setprompt")
+# def set_prompt(response:Response, eventData:dict):
+#     result = set_prompt_handler(response, eventData)
 
-    return result
+#     return result
 
 @app.post("/chat")
-def chat_without_prompt(response:Response, eventData:dict):
+def chat_with_gpt(response:Response, eventData:dict):
     result = chat_handler(response, eventData)
 
     return result
 
-@app.get("/chathistory")
+@app.get("/history")
 def get_chat_history(response:Response):
-    result = get_chat_history_handler(response)
+    result = chat_history_handler(response)
 
     return result
