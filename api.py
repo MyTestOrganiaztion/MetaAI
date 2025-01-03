@@ -1,10 +1,9 @@
 # import tiktoken
-# from typing import Union
-from fastapi import FastAPI, Response
 
+from infra.Fastapi import app
+from infra.Response import CustomResponse, ResponseStruct
 from handler.RequestHandler import *
 
-app = FastAPI()
 
 '''
 Get parameter in request
@@ -13,20 +12,16 @@ Get parameter in request
     request body -> define to "dict", "list". ex. def function(var:dict)
 '''
 
-# @app.post("/setprompt")
-# def set_prompt(response:Response, eventData:dict):
-#     result = set_prompt_handler(response, eventData)
-
-#     return result
 
 @app.post("/chat")
-def chat_with_gpt(response:Response, eventData:dict):
-    result = chat_handler(response, eventData)
+def chat_with_gpt(eventData:dict):
+    prompt = eventData["prompt"]
+    result = chat_handler(prompt)
 
-    return result
+    return CustomResponse(ResponseStruct(result=result))
 
 @app.get("/history")
-def get_chat_history(response:Response):
-    result = chat_history_handler(response)
+def get_chat_history():
+    result = chat_history_handler()
 
-    return result
+    return CustomResponse(ResponseStruct(result=result))
