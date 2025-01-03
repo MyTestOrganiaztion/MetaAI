@@ -1,6 +1,7 @@
 import re
 import requests
 from bs4 import BeautifulSoup as bs
+from urllib.parse import urlparse
 
 
 def extract_urls(inputString:str):
@@ -18,10 +19,22 @@ def extract_urls(inputString:str):
     return urls, nonUrls
 
 def get_website_content(url:str):
+    parsedUrl = urlparse(url)
+    host = f"{parsedUrl.scheme}://{parsedUrl.netloc}"
     response = requests.get(url)
     soup = bs(response.text, 'lxml')
-    imgUrls = [ element["src"] for element in soup.find_all("img") ]
-    
+
+    imgUrls = []
+    for imgElement in soup.find_all("img"):
+        src:str|None = imgElement["src"]
+        if src and src.endswith(('png', 'jpeg', 'gif', 'webp')):
+            if src.startswith("http"):
+                imgUrls.append(src)
+            elif src.startswith("/"):
+                imgUrls.append(host+src)
+            elif src.startswith("./"):
+                imgUrls.append(host+src[1:])
+
     return soup.get_text(), imgUrls
 
 def replace_urls_with_text(inputString:str, url:str, websiteContent:str):

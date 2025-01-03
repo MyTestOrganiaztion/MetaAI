@@ -1,19 +1,14 @@
 
 from models.PromptModel import SystemPromptPattern, PromptMessageList
-from reference.chatGPT import chat_completions_create
-from helper.PromptParser import extract_urls, get_website_content, replace_urls_with_text
+from infra.chatGPT import chat_completions_create
+from helper.WebParser import extract_urls, get_website_content, replace_urls_with_text
 from handler.ResponseHandler import error_handler
 
 from openai.types.chat import ChatCompletion
 from fastapi import Response
 
-promptMessages = PromptMessageList()
 
-# @error_handler
-# def set_prompt_handler(response:Response, eventData:dict=None):
-#     prompt = eventData["prompt"]
-#     promptMessages.init_messages(prompt)
-#     return {"prompt": promptMessages.get_system_prompt()}
+promptMessages = PromptMessageList()
 
 @error_handler
 def chat_handler(response:Response, eventData:dict=None):
