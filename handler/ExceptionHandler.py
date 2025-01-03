@@ -1,8 +1,8 @@
-from typing import Callable
-from fastapi import Request
 
 from infra.Response import ResponseStruct, CustomResponse
 
+from typing import Callable
+from fastapi import Request
 from openai import RateLimitError, APIConnectionError, APITimeoutError, AuthenticationError, PermissionDeniedError
 from requests.exceptions import ConnectionError
 from fastapi import FastAPI, status
@@ -21,7 +21,7 @@ def create_exception_handler(statusCode:int, errorCode:str, result:str) -> Calla
     
     return exception_handler
 
-def add_handler(_app:FastAPI):
+def add_handler(_app:FastAPI) -> FastAPI:
     
     _app.add_exception_handler(
         RateLimitError,
