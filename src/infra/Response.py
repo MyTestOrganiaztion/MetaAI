@@ -5,7 +5,7 @@ from typing import Any
 
 
 class ResponseStruct(BaseModel):
-    errorCode:str = "OK000"
+    code:str = "OK000"
     detail:str = ""
     result:Any
 

@@ -20,7 +20,7 @@ def list_models():
     models = client.models.list()
     for model in models:
         print(model)
-        with open("models.json", "a") as f:
+        with open("gpt_models.txt", "a") as f:
             f.write(model.to_json() + ",\n")
 
 

@@ -1,14 +1,16 @@
 
 from models.PromptModel import SystemPromptPattern, PromptMessageList
-from infra.chatGPT import chat_completions_create
+from infra.ChatGPT import chat_completions_create
 from helper.WebParser import extract_urls, get_website_content, replace_urls_with_text
 
 from openai.types.chat import ChatCompletion
 
 
-promptMessages = PromptMessageList()
+promptMessages:PromptMessageList = None
 
 def chat_handler(prompt:str) -> dict:
+    global promptMessages
+    promptMessages = PromptMessageList()
     urls, nonUrls = extract_urls(prompt)
 
     if urls and nonUrls:

@@ -10,7 +10,7 @@ from fastapi import FastAPI, status
 
 def create_exception_handler(statusCode:int, errorCode:str, result:str) -> Callable[[Request, Exception], CustomResponse]:
     response = ResponseStruct(
-        errorCode=errorCode,
+        code=errorCode,
         detail="",
         result=result
     )
@@ -35,7 +35,7 @@ def add_handler(_app:FastAPI) -> FastAPI:
     _app.add_exception_handler(
         APIConnectionError,
         create_exception_handler(
-            statusCode=status.HTTP_400_BAD_REQUEST,
+            statusCode=status.HTTP_503_SERVICE_UNAVAILABLE,
             errorCode="ER001",
             result="APIConnectionError"
         )
