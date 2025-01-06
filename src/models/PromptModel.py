@@ -11,7 +11,7 @@ class SystemPromptPattern:
         根據我提供的網頁文字內容以及其中包含的圖片，
     '''
     TEXT_AND_WEB:str = '''
-        根據我的網頁內容和著重的內容，
+        根據我的網頁內容和和提示，
     '''
     IMAGE_URL_ONLY:str = '''
         根據我提供的圖像連結，
@@ -22,60 +22,60 @@ class PromptRole:
     USER = "user"
     ASSISTANT = "assistant"
 
-class PromptMessage:
-    def __init__(self, role:str, content:str|list = None):
-        self.role = role
-        self.content = content
+# class PromptMessage:
+#     def __init__(self, role:str, content:str|list="", promptTokenUsage:int=0, completionTokenUsage:int=0):
+#         self.role = role
+#         self.content = content
 
-    def add_content(self, contentItem:str|dict):
-        """Adds content to the message."""
-        self.content.append(contentItem)
+#     def add_content(self, contentItem:str|dict):
+#         """Adds content to the message."""
+#         self.content.append(contentItem)
 
-    def to_dict(self) -> dict:
-        """Converts the message to a dictionary format."""
-        return {"role": self.role, "content": self.content}
+#     def to_dict(self) -> dict:
+#         """Converts the message to a dictionary format."""
+#         return {"role": self.role, "content": self.content}
 
-class PromptMessageList:
-    def __init__(self):
-        # Initialize with a default system message
-        self.messages = [PromptMessage(PromptRole.SYSTEM, SystemPromptPattern.BASIC)]
+# class PromptMessageList:
+#     def __init__(self):
+#         # Initialize with a default system message
+#         self.messages = [PromptMessage(PromptRole.SYSTEM, SystemPromptPattern.BASIC)]
 
-    def add_message(self, role: str, contentItem: str | dict):
-        """Adds a new message or updates an existing one based on the role."""
-        if role == PromptRole.SYSTEM and self.messages[0].role == PromptRole.SYSTEM:
-            self.messages[0].content = SystemPromptPattern.BASIC.format(contentItem)  # Append to existing system content
+#     def add_message(self, role: str, contentItem: str | dict):
+#         """Adds a new message or updates an existing one based on the role."""
+#         if role == PromptRole.SYSTEM and self.messages[0].role == PromptRole.SYSTEM:
+#             self.messages[0].content = SystemPromptPattern.BASIC.format(contentItem)  # Append to existing system content
         
-        elif role == PromptRole.USER and self.messages[-1].role == PromptRole.USER:
-            self.messages[-1].add_content(contentItem)  # Append to existing user content
+#         elif role == PromptRole.USER and self.messages[-1].role == PromptRole.USER:
+#             self.messages[-1].add_content(contentItem)  # Append to existing user content
         
-        elif role == PromptRole.ASSISTANT:
-            self.messages.append(PromptMessage(role, contentItem))
+#         elif role == PromptRole.ASSISTANT:
+#             self.messages.append(PromptMessage(role, contentItem))
         
-        else:
-            self.messages.append(PromptMessage(role, [contentItem]))
+#         else:
+#             self.messages.append(PromptMessage(role, [contentItem]))
 
-    def set_system_prompt(self, content: str):
-        """Sets the system prompt."""
-        self.add_message(PromptRole.SYSTEM, content)
+#     def set_system_prompt(self, content:str):
+#         """Sets the system prompt."""
+#         self.add_message(PromptRole.SYSTEM, content)
 
-    def add_user_message(self, content: dict, isImage:bool=False):
-        """Adds a user message."""
-        if isImage:
-            self.add_message(PromptRole.USER, {"type": "image_url", "image_url": {"url": content}})
+#     def add_user_message(self, content:dict, isImage:bool=False):
+#         """Adds a user message."""
+#         if isImage:
+#             self.add_message(PromptRole.USER, {"type": "image_url", "image_url": {"url": content}})
         
-        else:
-            self.add_message(PromptRole.USER, {"type": "text", "text":content})
+#         else:
+#             self.add_message(PromptRole.USER, {"type": "text", "text":content})
 
-    def add_assistant_message(self, content: str):
-        """Adds an assistant message."""
-        self.add_message(PromptRole.ASSISTANT, content)
+#     def add_assistant_message(self, content: str):
+#         """Adds an assistant message."""
+#         self.add_message(PromptRole.ASSISTANT, content)
 
-    def get_messages(self) -> list:
-        """Returns all messages in dictionary format."""
+#     def get_messages(self) -> list:
+#         """Returns all messages in dictionary format."""
         
-        return [message.to_dict() for message in self.messages]
+#         return [message.to_dict() for message in self.messages]
 
-    def get_system_prompt(self) -> str | None:
-        """Returns the concatenated system prompt."""
+#     def get_system_prompt(self) -> str | None:
+#         """Returns the concatenated system prompt."""
         
-        return " ".join(self.messages[0].content) if self.messages and self.messages[0].role == PromptRole.SYSTEM else None
+#         return " ".join(self.messages[0].content) if self.messages and self.messages[0].role == PromptRole.SYSTEM else None

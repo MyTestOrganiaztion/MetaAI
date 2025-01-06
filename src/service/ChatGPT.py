@@ -1,17 +1,15 @@
 from openai import OpenAI
-
-from infra.env import GPT_API_KEY
-
-from models.PromptModel import PromptMessageList
+import os
 
 
+GPT_API_KEY = os.getenv("GPT_API_KEY")
 MODEL = "gpt-4-turbo-2024-04-09"
 client = OpenAI( api_key=GPT_API_KEY )
 
-def chat_completions_create(messages:PromptMessageList):
+def chat_completions_create(messages:list[dict]) -> None:
     return client.chat.completions.create(
         model=MODEL,
-        messages=messages.get_messages(),
+        messages=messages,
         temperature=0.7
     )
 

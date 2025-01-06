@@ -1,7 +1,7 @@
 {
     "textOnly": {"prompt": "AIでペルソナ分析と広告文の生成、及びFacebookやインスタグラムへの投稿を一括操作と管理ができるウェブサイト。"},
     "webOnly": {"prompt": "https://app.chatartpro.com/create?site_initializing=tw.imyfone.com"},
-    "textAndWeb": {"prompt": "AIでペルソナ分析と広告文の生成、https://app.chatartpro.com/create?site_initializing=tw.imyfone.com"},
+    "textAndWeb": {"prompt": "このウェブに興味があるかもしれないターゲット層を教えてください。https://app.chatartpro.com/create?site_initializing=tw.imyfone.com"},
     "reachRateLimit": {"prompt": "https://cars.tvbs.com.tw/report/230533 https://cars.tvbs.com.tw/report/230533"},
     "gptConnectionError": {"prompt": "AIでペルソナ分析と広告文の生成、及びFacebookやインスタグラムへの投稿を一括操作と管理ができるウェブサイト。"},
     "missingRequirePara": {"prompt_test": "AIでペルソナ分析と広告文の生成、及びFacebookやインスタグラムへの投稿を一括操作と管理ができるウェブサイト。"}

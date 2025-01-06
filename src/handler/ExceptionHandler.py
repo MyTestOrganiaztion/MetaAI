@@ -5,6 +5,7 @@ from typing import Callable
 from fastapi import Request
 from openai import RateLimitError, APIConnectionError, APITimeoutError, AuthenticationError, PermissionDeniedError
 from requests.exceptions import ConnectionError
+from redis_om.model.model import NotFoundError
 from fastapi import FastAPI, status
 
 
@@ -84,6 +85,15 @@ def add_handler(_app:FastAPI) -> FastAPI:
             statusCode=status.HTTP_500_INTERNAL_SERVER_ERROR,
             errorCode="SYS000",
             result="ConnectionError"
+        )
+    )
+
+    _app.add_exception_handler(
+        NotFoundError,
+        create_exception_handler(
+            statusCode=status.HTTP_400_BAD_REQUEST,
+            errorCode="ER0006",
+            result="SessionNotFoundError"
         )
     )
 
