@@ -1,5 +1,5 @@
 import pytest
-from httpx import AsyncClient
+from httpx import AsyncClient, Client
 import json
 
 
@@ -8,9 +8,13 @@ testEvent = json.load(open("./test/events/prompt.json", "r", encoding="utf-8"))
 
 @pytest.mark.asyncio
 async def test_post_prompt_text_only():
+    with Client(base_url=testEndPoint) as client:
+        response = client.get("/session/create", timeout=120)
+        responseData:dict = response.json()
+    sessionID = responseData.get("result").get("sessionID")
     async with AsyncClient(base_url=testEndPoint) as client:
         payload = testEvent["textOnly"]
-        response = await client.post("/chat", json=payload, timeout=120)
+        response = await client.post(f"/chat/{sessionID}", json=payload, timeout=120)
     responseData = response.json()
     assert response.status_code == 200
     assert responseData.get("code") == "OK000"
@@ -18,9 +22,13 @@ async def test_post_prompt_text_only():
 
 @pytest.mark.asyncio
 async def test_post_prompt_web_only():
+    with Client(base_url=testEndPoint) as client:
+        response = client.get("/session/create", timeout=120)
+        responseData:dict = response.json()
+    sessionID = responseData.get("result").get("sessionID")
     async with AsyncClient(base_url=testEndPoint) as client:
         payload = testEvent["webOnly"]
-        response = await client.post("/chat", json=payload, timeout=120)
+        response = await client.post(f"/chat/{sessionID}", json=payload, timeout=120)
     responseData = response.json()
     assert response.status_code == 200
     assert responseData.get("code") == "OK000"
@@ -28,9 +36,13 @@ async def test_post_prompt_web_only():
 
 @pytest.mark.asyncio
 async def test_post_prompt_text_web():
+    with Client(base_url=testEndPoint) as client:
+        response = client.get("/session/create", timeout=120)
+        responseData:dict = response.json()
+    sessionID = responseData.get("result").get("sessionID")
     async with AsyncClient(base_url=testEndPoint) as client:
         payload = testEvent["textAndWeb"]
-        response = await client.post("/chat", json=payload, timeout=120)
+        response = await client.post(f"/chat/{sessionID}", json=payload, timeout=120)
     responseData = response.json()
     assert response.status_code == 200
     assert responseData.get("code") == "OK000"
@@ -38,18 +50,26 @@ async def test_post_prompt_text_web():
 
 @pytest.mark.asyncio
 async def test_reach_rate_limit():
+    with Client(base_url=testEndPoint) as client:
+        response = client.get("/session/create", timeout=120)
+        responseData:dict = response.json()
+    sessionID = responseData.get("result").get("sessionID")
     async with AsyncClient(base_url=testEndPoint) as client:
         payload = testEvent["reachRateLimit"]
-        response = await client.post("/chat", json=payload, timeout=120)
+        response = await client.post(f"/chat/{sessionID}", json=payload, timeout=120)
     responseData = response.json()
     assert response.status_code == 429
     assert responseData.get("code") == "ER000"
 
 @pytest.mark.asyncio
-async def test_missong_require_para():
+async def test_missing_require_para():
+    with Client(base_url=testEndPoint) as client:
+        response = client.get("/session/create", timeout=120)
+        responseData:dict = response.json()
+    sessionID = responseData.get("result").get("sessionID")
     async with AsyncClient(base_url=testEndPoint) as client:
         payload = testEvent["missingRequirePara"]
-        response = await client.post("/chat", json=payload, timeout=120)
+        response = await client.post(f"/chat/{sessionID}", json=payload, timeout=120)
     responseData = response.json()
     assert response.status_code == 400
     assert responseData.get("code") == "ER005"
