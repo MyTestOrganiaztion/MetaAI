@@ -16,7 +16,6 @@ class Transformer:
                 elif content.type == "image_url":
                     messageDump["content"][_id] = {"type": content.type, content.type: content.image_url.model_dump(exclude="pk", exclude_unset=True)}
                     
-        print(messageDump)
         return messageDump
 
     @staticmethod
