@@ -1,7 +1,7 @@
 {
     "textOnly": {"prompt": "うちが扱っている商品は主にブロックチェン関連の仮想通貨やNFTみたいの暗号化電子資産とブロックチェンに基づく周辺サービス。"},
     "webOnly": {"prompt": "https://wallet.bigant.ca/"},
-    "textAndWeb": {"prompt": "このウェブに興味があるかもしれないターゲット層を教えてください。https://wallet.bigant.ca/"},
+    "textAndWeb": {"prompt": "ブロックチェン関連の仮想通貨やNFTみたいの暗号化電子資産。https://wallet.bigant.ca/"},
     "reachRateLimit": {"prompt": "https://cars.tvbs.com.tw/report/230533 https://cars.tvbs.com.tw/report/230533　https://cars.tvbs.com.tw/report/230533 https://cars.tvbs.com.tw/report/230533"},
     "missingRequirePara": {"prompt_test": "abcdefghijklmnopqrstuvwxyz"}
 }
