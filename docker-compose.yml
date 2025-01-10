@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: app-container
+    ports:
+      - "7788:8000"
+    depends_on:
+      - redis
+    env_file:
+      - ./setting/.env
+
+  redis:
+    image: redis/redis-stack:latest
+    container_name: redis-stack-server
