@@ -1,0 +1,7 @@
+fastapi[standard]
+openai
+bs4
+lxml
+redis
+redis-om
+requests
