@@ -1,5 +1,5 @@
 # set environment
-import setting.Env
+# import setting.Env
 
 # import tiktoken
 
