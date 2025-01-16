@@ -42,9 +42,9 @@ def chat_handler(chatSessionID:str, prompt:str) -> dict:
     return {
       "prompt": prompt, 
       "completion": completion.choices[0].message.content, 
-      "prompt token usage": promptTokenUsage,
-      "completion token usage": completionTokenUsage,
-      "total token usage": promptTokenUsage + completionTokenUsage
+      "promptTokenUsage": promptTokenUsage,
+      "completionTokenUsage": completionTokenUsage,
+      "totalTokenUsage": promptTokenUsage + completionTokenUsage
     }
 
 def chat_history_handler(chatSessionID:str) -> list:

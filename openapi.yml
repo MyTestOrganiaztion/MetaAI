@@ -1,0 +1,81 @@
+openapi: 3.1.0
+info:
+  title: FastAPI
+  version: 0.1.0
+paths:
+  /session/create:
+    get:
+      summary: Create Session
+      operationId: create_session_session_create_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: OK000
+                  detail:
+                    type: string
+                    example: ""
+                  result:
+                    type: object
+                    properties:
+                      sessionID:
+                        type: string
+  /chat/{sessionID}:
+    post:
+      summary: Chat With Gpt
+      operationId: chat_with_gpt_chat__sessionID__post
+      parameters:
+        - name: sessionID
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The session ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  description: Prompt for the chat
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: OK000
+                  detail:
+                    type: string
+                    example: ""
+                  result:
+                    type: object
+                    properties:
+                      prompt:
+                        type: string
+                        description: The prompt
+                      completion:
+                        type: string
+                        description: Response from GPT
+                      promptTokenUsage:
+                        type: integer
+                        description: The prompt token usage
+                      completionTokenUsage:
+                        type: integer
+                        description: The completion token usage
+                      totalTokenUsage:
+                        type: integer
+                        description: The total token usage
