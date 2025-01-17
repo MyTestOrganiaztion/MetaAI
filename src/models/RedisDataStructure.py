@@ -6,8 +6,8 @@ class ImageUrl(EmbeddedJsonModel):
 
 class Content(EmbeddedJsonModel):
     type: str
-    text: str = None
-    image_url: ImageUrl = None
+    text: str | None = None
+    image_url: ImageUrl | None = None
 
 class Message(EmbeddedJsonModel):
     role: str

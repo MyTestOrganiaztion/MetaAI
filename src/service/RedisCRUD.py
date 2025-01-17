@@ -20,7 +20,7 @@ class Transformer:
 
     @staticmethod
     def from_dict_to_redis_message(role:str, _content:str|dict) -> Message:
-        if role == PromptRole.USER:
+        if isinstance(_content, dict):
             if _content["type"] == "image_url":
                 _content[_content["type"]] = ImageUrl(**{"url": _content[_content["type"]]["url"]})
             
@@ -71,7 +71,7 @@ class ChatSessionController():
 
     def get_messages(self) -> list[dict]:
         
-        return [Transformer.from_redis_message_to_dict(message) for message in self.session.messages]
+        return [Transformer.from_redis_message_to_dict(message.model_copy(deep=True)) for message in self.session.messages]
     
     @staticmethod
     def is_session_exists(sessionID:str) -> bool:
