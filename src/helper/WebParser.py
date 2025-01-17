@@ -26,19 +26,25 @@ def get_website_content(url:str):
 
     imgUrls = []
     for imgElement in soup.find_all("img"):
-        src:str|None = imgElement["src"]
+        src: str | None = imgElement.get("src")
         if src and src.endswith(('png', 'jpeg', 'gif', 'webp')):
             if src.startswith("http"):
                 imgUrls.append(src)
             elif src.startswith("/"):
-                imgUrls.append(host+src)
+                imgUrls.append(host + src)
             elif src.startswith("./"):
-                imgUrls.append(host+src[1:])
+                imgUrls.append(host + src[1:])
 
-    return soup.get_text(), imgUrls
+    # Extract and clean text content
+    rawText = soup.get_text()
+    cleanedText = " ".join(
+        line.strip() for line in rawText.splitlines() if line.strip()
+    )
+
+    return cleanedText, imgUrls
 
 def replace_urls_with_text(inputString:str, url:str, websiteContent:str):
-    inputString = inputString.replace(url, f'\n網頁內容:"{websiteContent}"')
+    inputString = inputString.replace(url, f'網頁內容:"{websiteContent}"')
     
     return inputString
 
